@@ -306,9 +306,10 @@ async def on_reaction_add(reaction, user):
                     try:
                         thread = await reaction.message.guild.fetch_channel(bounty['thread_id'])
                         await thread.delete()
+                        bounty['thread_id'] = None
+                        save_bounties_data()
                     except Exception as e:
                         print(f"An error occurred while deleting the thread: {e}")
-                    break
                     
                     # Send a message confirming the unclaimed bounty
                     log_channel = bot.get_channel(log_channel_id)
