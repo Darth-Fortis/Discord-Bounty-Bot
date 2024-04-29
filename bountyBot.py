@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord.ext import tasks
 import json
 
 intents = discord.Intents.all()
@@ -18,6 +19,7 @@ bounties = []
 command_team_channel_id = 1199141420221603862  
 log_channel_id = 1216183031417536522  
 general_channel_id = 1199121401706201208
+status_channel_id = 1234556956602138758
 
 # Function to save XP data to file
 def save_xp_data():
@@ -71,6 +73,17 @@ def load_xp_data():
     except json.decoder.JSONDecodeError:
         xp_data = {}
 
+# Define a task to send a status update message every 15 minutes
+@tasks.loop(minutes=15)
+async def status_update_task():
+    try:
+        # Get the channel where the bot will send the message
+        channel = bot.get_channel(status_channel_id)
+        if channel:
+            await channel.send("Test")
+    except Exception as e:
+        await channel.send(f'An error occurred: {str(e)}')
+
 @bot.event
 async def on_ready():
     print('\n[//] Bot is ready. [//]')
@@ -84,6 +97,9 @@ async def on_ready():
     # Update XP data with current server members
     await update_xp_data()
     print('\n[//] All members updated. [//]')
+
+    # Start the status update task
+    status_update_task.start()
 
 
 # Command to test if the bot receives commands
@@ -379,6 +395,9 @@ async def on_disconnect():
 
     # Save XP data to file
     save_xp_data()
+
+    # Stop the status update task
+    status_update_task.cancel()
 
 # Run the bot
 bot.run('MTIyMDEzMzcxNDM4MjU1NzE4NA.GWuGyW.yi3FJ0m5nIKOFVOXW0CO1H3pMj2cRgG-v3xex4')
