@@ -101,6 +101,8 @@ async def on_ready():
     # Start the status update task
     status_update_task.start()
 
+    status_channel = bot.get_channel(status_channel_id)
+    await status_channel.send('[//] Bot is online. [//]')
 
 # Command to test if the bot receives commands
 @bot.command()
@@ -174,7 +176,7 @@ async def addbounty(ctx, person: str, rr: str, rank: str, place: str, xp: int):
         
         # Add the bounty message with reactions to the general channel
         bounty_message = await general_channel.send(
-            f"{clan_saxon_mention}\n\nBounty for {person} - \nRR: {rr}, \nRank: {rank}, \nPlace: {place}, \nXP: {xp}. \nReact with ✅ to claim, ❌ to cancel (HIGH COMMAND/LEADERS ONLY).")
+            f"{clan_saxon_mention}\n\nBounty for {person} - \nRR: {rr}, \nRank: {rank}, \nPlace: {place}, \nXP: {xp}. \nReact with ✅ to claim, ❌ to cancel (HIGH COMMAND/LEADERS ONLY), ❎ to unclaim.")
 
         await bounty_message.add_reaction('✅')  # Claim
         await bounty_message.add_reaction('❌')  # Cancel
