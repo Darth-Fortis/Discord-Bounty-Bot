@@ -16,10 +16,10 @@ xp_levels = {}
 bounties = []
 
 # IDs for specific channels
-command_team_channel_id = 1199141420221603862  
-log_channel_id = 1216183031417536522  
-general_channel_id = 1199121401706201208
-status_channel_id = 1234556956602138758
+command_team_channel_id = # CHANGE FOR YOUR COMMAND CHANNEL ID  
+log_channel_id = # CHANGE FOR YOUR LOG CHANNEL ID
+general_channel_id = # CHANGE FOR YOUR GENERAL CHANNEL ID
+status_channel_id = # CHANGE FOR YOUR STATUS CHANNEL ID
 
 # Function to save XP data to file
 def save_xp_data():
@@ -31,18 +31,18 @@ def save_bounties_data():
     with open('bounties.json', 'w') as file:
         json.dump(bounties, file, indent=4, separators=(',', ': '))
 
-# Function to update XP data with current server members who have the 'Clan Saxon' role
+# Function to update XP data with current server members who have the 'BOUNTY HUNTER' role
 async def update_xp_data():
     global xp_data
 
     # Fetch all members of the server
-    guild = bot.get_guild(1199105596956364900)
+    guild = bot.get_guild() # <-- CHANGE FOR YOUR GUILD ID
     members = guild.members
     
-    # Role ID of the 'Clan Saxon' role
-    clan_saxon_role_id = 1199106327474098226
+    # Role ID of the 'BOUNTY HUNTER' role
+    clan_saxon_role_id = # CHANGE FOR YOUR BOUNTY HUNTING ROLE ID
     
-    # Iterate through each member and add their ID to xp_data if not already present and they have the 'Clan Saxon' role
+    # Iterate through each member and add their ID to xp_data if not already present and they have the 'BOUNTY HUNTER' role
     for member in members:
         member_id = str(member.id)
         if member_id not in xp_data and discord.utils.get(member.roles, id = clan_saxon_role_id):
@@ -172,7 +172,7 @@ async def addbounty(ctx, person: str, rr: str, rank: str, place: str, xp: int):
             return await ctx.send("This command can only be used in the Command Team channel.")
 
         general_channel = bot.get_channel(general_channel_id)
-        clan_saxon_mention = f'<@&{1199106327474098226}>'
+        clan_saxon_mention = # CHANGE FOR YOUR BOUNTY HUNTER MENTION
         
         # Add the bounty message with reactions to the general channel
         bounty_message = await general_channel.send(
@@ -403,4 +403,4 @@ async def on_disconnect():
     status_update_task.cancel()
 
 # Run the bot
-bot.run('MTIyMDEzMzcxNDM4MjU1NzE4NA.GWuGyW.yi3FJ0m5nIKOFVOXW0CO1H3pMj2cRgG-v3xex4')
+bot.run() # <--- CHANGE FOR YOUR BOT TOKEN
